@@ -6,6 +6,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn.linear_model import LogisticRegression
+from imblearn.over_sampling import SMOTE
 # 读取数据
 data = pd.read_csv("data2_training.csv")
 label = data['status']
@@ -51,11 +52,17 @@ test = pd.read_csv("data2_test.csv")
 test = test[imp_fea]
 # 归一化
 scaler = StandardScaler()
+
 data_scaled = pd.DataFrame(scaler.fit_transform(data), columns=data.columns)
 test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns)
 
 X_train_scaled, X_test_scaled, y_train_scaled, y_test_scaled = train_test_split(
     data_scaled, label, test_size=0.2, random_state=0)
+
+sm = SMOTE(random_state=0)
+# 跑最终测试的时候把整个训练集都加进去，不要划分了
+X_train_scaled, y_train_scaled = sm.fit_sample(data_scaled, label)
+
 # 逻辑回归
 log = LogisticRegression(random_state=0)
 log.fit(X_train_scaled, y_train_scaled)
@@ -76,4 +83,4 @@ print("acc"+str(acc))
 p = log.predict(test_scaled)
 p = pd.DataFrame(p)
 p.columns = ["status"]
-p.to_csv('result.csv', index=0)
+p.to_csv('第二次实验+第七组+第二次提交.csv', index=0)
