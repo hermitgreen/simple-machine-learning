@@ -61,7 +61,7 @@ X_train_scaled, X_test_scaled, y_train_scaled, y_test_scaled = train_test_split(
 
 sm = SMOTE(random_state=0)
 # 跑最终测试的时候把整个训练集都加进去，不要划分了
-X_train_scaled, y_train_scaled = sm.fit_sample(data_scaled, label)
+X_train_scaled, y_train_scaled = sm.fit_sample(X_train_scaled, y_train_scaled)
 
 # 逻辑回归
 log = LogisticRegression(random_state=0)
@@ -82,7 +82,12 @@ print("acc"+str(acc))
 score = 2*f1+acc
 print("score"+str(score))
 
-p = log.predict(test_scaled)
+# 跑最终测试的时候把整个训练集都加进去，不要划分了
+sm = SMOTE(random_state=0)
+X_train_scaled, y_train_scaled = sm.fit_sample(data_scaled, label)
+model = LogisticRegression()
+model.fit(X_train_scaled, y_train_scaled)
+p = model.predict(test_scaled)
 p = pd.DataFrame(p)
 p.columns = ["status"]
 p.to_csv('res.csv', index=0)
