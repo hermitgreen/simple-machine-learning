@@ -79,8 +79,10 @@ f1 = 2*tp/(2*tp+fp+fn)
 print("f1"+str(f1))
 acc = (tp+tn)/(tp+fn+fp+tn)
 print("acc"+str(acc))
+score = 2*f1+acc
+print("score"+str(score))
 
 p = log.predict(test_scaled)
 p = pd.DataFrame(p)
 p.columns = ["status"]
-p.to_csv('第二次实验+第七组+第二次提交.csv', index=0)
+p.to_csv('res.csv', index=0)
