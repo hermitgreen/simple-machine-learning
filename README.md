@@ -1,4 +1,4 @@
-# Machine_Learning_Code
+# simple-machine-learning
 
 Code of normal ML algorithm
 
